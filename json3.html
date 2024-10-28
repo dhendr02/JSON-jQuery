@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSON 3</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        .song {
+            margin-bottom: 10px;
+        }
+        #song_list {
+            margin-top: 20px;
+            padding-top: 10px;
+            border-top: 1px solid black;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Filter Songs by Genre</h1>
+    
+    <form id="filter-form">
+        <label for="genre-select">Choose a genre:</label>
+        <select id="genre-select"></select>
+        <button type="button" id="filter-button">Filter</button>
+    </form>
+
+    <div id="song_list"></div>
+
+    <script>
+        $.get("songs.json", function(data) {
+            let genres = new Set();
+
+            data.forEach(song => {
+                song.genres.forEach(genre => genres.add(genre));
+            });
+
+            genres.forEach(genre => {
+                $('#genre-select').append(`<option value="${genre}">${genre}</option>`);
+            });
+
+            $('#filter-button').click(function() {
+                const selectedGenre = $('#genre-select').val();
+                let songListHTML = "";
+
+                data.forEach(song => {
+                    if (song.genres.includes(selectedGenre)) {
+                        songListHTML += `<div class="song">${song.title}</div>`;
+                    }
+                });
+
+                $('#song_list').html(songListHTML);
+            });
+        });
+    </script>
+</body>
+</html>

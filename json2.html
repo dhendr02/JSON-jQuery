@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSON 2</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .song {
+            margin-bottom: 20px;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        .title {
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+        .artist, .genre, .year {
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <h1>Song List</h1>
+    <div id="song-list"></div>
+
+    <script>
+        $.get("songs.json", function(data) {
+            console.log(data);
+            let songListHTML = ""; 
+
+            data.forEach(song => {
+                songListHTML += `
+                    <div class="song">
+                        <div class="title">${song.title}</div>
+                        <div class="artist">Artist: ${song.artist}</div>
+                        <div class="genre">Genre: ${song.genres.join(", ")}</div>
+                        <div class="year">Released: ${song.year}</div>
+                    </div>
+                `;
+            });
+
+            document.getElementById("song-list").innerHTML = songListHTML;
+        });
+    </script>
+</body>
+</html>
